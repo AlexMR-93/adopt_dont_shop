@@ -8,10 +8,10 @@ RSpec.describe("Application Show Page") do
     @shelter = Shelter.create(    name: "Mystery Building",     city: "Irvine CA",     foster_program: false,     rank: 9)
     @scooby = Pet.create(    name: "Scooby",     age: 2,     breed: "Great Dane",     adoptable: true,     shelter_id: @shelter.id)
     @pablo = Pet.create(    name: "Pablo",     age: 1,     breed: "Chihuahua",     adoptable: true,     shelter_id: @shelter.id)
-    @pet_app_1 = PetApplication.create!(    pet: @pablo,     application: @smithers_application)
   end
 
   it("shows an application's attributes") do
+    @pet_app_1 = PetApplication.create!(    pet: @pablo,     application: @smithers_application)
     visit("/applications/#{@smithers_application.id}")
     expect(page).to(have_content("Application Show Page"))
     expect(page).to(have_content(@smithers_application.name))
@@ -27,6 +27,7 @@ RSpec.describe("Application Show Page") do
   end
 
   it("has a link to the pet's show page") do
+    @pet_app_1 = PetApplication.create!(    pet: @pablo,     application: @smithers_application)
     visit("/applications/#{@smithers_application.id}")
     expect(page).to(have_link("#{@pablo.name}"))
     expect(page).not_to(have_link("#{@scooby.name}"))
@@ -89,6 +90,15 @@ RSpec.describe("Application Show Page") do
             end
           end
         end
+      end
+    end
+  end
+
+  describe("7. No Pets on an Application") do
+    describe("And I have not added any pets to the application") do
+      it("I do not see a section to submit my application") do
+        visit("/applications/#{@smithers_application.id}")
+        expect(page).not_to(have_content("Submit my Application"))
       end
     end
   end
