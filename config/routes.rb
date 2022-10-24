@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   get("/applications/:id",   to: "applications#show")
   post("/applications",   to: "applications#create")
   post("/applications/:id/:pet_id",   to: "applications#show")
+  patch("/applications/:id",   to: "applications#update")
   get("/pets",   to: "pets#index")
   get("/pets/:id",   to: "pets#show")
   get("/pets/:id/edit",   to: "pets#edit")

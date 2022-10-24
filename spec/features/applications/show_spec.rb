@@ -19,8 +19,6 @@ RSpec.describe("Application Show Page") do
     expect(page).to(have_content(@smithers_application.city))
     expect(page).to(have_content(@smithers_application.state))
     expect(page).to(have_content(@smithers_application.zip_code))
-    expect(page).to(have_content(@smithers_application.description))
-    expect(page).to(have_content(@smithers_application.status))
     expect(page).to(have_content(@pablo.name))
     expect(page).not_to(have_content(@homer_application.name))
     expect(page).not_to(have_content(@scooby.name))
@@ -47,6 +45,7 @@ RSpec.describe("Application Show Page") do
               visit("/applications/#{@smithers_application.id}")
               fill_in(:pet_name,               with: "Scooby")
               click_button("Search")
+              click_button("Adopt:#{@scooby.name}")
               expect(current_path).to(eq("/applications/#{@smithers_application.id}"))
             end
           end
@@ -57,14 +56,39 @@ RSpec.describe("Application Show Page") do
 
   describe("I search for a Pet by name And I see the names Pets that match my search") do
     describe(" Then next to each Pet's name I see a button to Adopt this Pet When I click one of these buttons") do
-      it("Then I am taken back to the application show page And I see the Pet I want to adopt listed on this application") do
-        visit("/applications/#{@smithers_application.id}")
+      it("5.Then I am taken back to the application show page And I see the Pet I want to adopt listed on this application") do
         visit("/applications/#{@smithers_application.id}")
         fill_in(:pet_name,         with: "Scooby")
         click_button("Search")
         expect(current_path).to(eq("/applications/#{@smithers_application.id}"))
         click_button("Adopt:#{@scooby.name}")
         expect(current_path).to(eq("/applications/#{@smithers_application.id}"))
+      end
+    end
+  end
+
+  describe("I have added one or more pets to the application") do
+    describe("Then I see a section to submit my application") do
+      describe("And in that section I see an input to enter why I would make a good owner for these pet(s) When I fill in that input") do
+        describe("I click a button to submit this application") do
+          describe("Then I am taken back to the application's show page") do
+            describe("I see an indicator that the application is Pending") do
+              describe("I see all the pets that I want to adopt") do
+                it("6.I do not see a section to add more pets to this application") do
+                  visit("/applications/#{@smithers_application.id}")
+                  fill_in(:pet_name,                   with: "Scooby")
+                  click_button("Search")
+                  click_button("Adopt:#{@scooby.name}")
+                  expect(page).to(have_content("Submit my Application"))
+                  fill_in(:description,                   with: "I have a lot of land and no friends")
+                  click_button("Submit my Application")
+                  expect(current_path).to(eq("/applications/#{@smithers_application.id}"))
+                  expect(page).to(have_content("Pending"))
+                end
+              end
+            end
+          end
+        end
       end
     end
   end

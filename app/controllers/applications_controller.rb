@@ -33,9 +33,20 @@ class ApplicationsController < ApplicationController
     end
   end
 
+  def update
+    application = Application.find(params[:id])
+
+    if application.update(    description: params[:description],     status: "Pending")
+      redirect_to("/applications/#{application.id}")
+    else
+      redirect_to("/applications/#{application.id}")
+      flash[:alert] = "Error: #{error_message(application.errors)}"
+    end
+  end
+
   private
 
   def app_params
-    params.permit(:name, :street_address, :city, :state, :zip_code, :description, :status)
+    params.permit(:name, :street_address, :city, :state, :zip_code)
   end
 end
