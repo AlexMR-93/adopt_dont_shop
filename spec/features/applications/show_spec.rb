@@ -64,7 +64,7 @@ RSpec.describe("Application Show Page") do
         click_button("Search")
         expect(current_path).to(eq("/applications/#{@smithers_application.id}"))
         click_button("Adopt:#{@scooby.name}")
-        expect(current_path).to(eq("/applications/#{@smithers_application.id}/#{@scooby.id}"))
+        expect(current_path).to(eq("/applications/#{@smithers_application.id}"))
       end
     end
   end
