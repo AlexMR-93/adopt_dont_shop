@@ -15,6 +15,7 @@
 
 
 
+
    <% @pets.each do |pet| %>
      <p><%= pet.name %> </p>
      <%= button_to "Adopt:#{pet.name}", "/applications/#{@application.id}/#{pet.id}" %>
