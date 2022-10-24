@@ -7,10 +7,8 @@
   <ul>Zip Code <b><%= @application.zip_code %></b></ul>
   <ul>Description <b><%= @application.description %></b></ul>
   <ul>Status <b><%= @application.status %></b></ul>
-
+    <h3>Desired Pet</h3>
    <% @application.pets.each do |pet| %>
-      <h3>Desired Pet</h3>
-
       <ol><%= link_to "#{pet.name}", "/pets/#{pet.id}" %></ol>
    <% end %>
 
@@ -25,4 +23,5 @@
 
    <% @pets.each do |pet| %>
      <p><%= pet.name %> </p>
-    <% end %> 
+     <%= button_to "Adopt:#{pet.name}", "/applications/#{@application.id}/#{pet.id}" %>
+    <% end %>

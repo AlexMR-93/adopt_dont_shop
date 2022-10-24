@@ -34,7 +34,7 @@ RSpec.describe("Application Show Page") do
     expect(page).not_to(have_link("#{@scooby.name}"))
     expect(page).not_to(have_link("#{@homer_application.id}"))
     click_link("#{@pablo.name}")
-    expect(current_path).to eq("/pets/#{@pablo.id}")
+    expect(current_path).to(eq("/pets/#{@pablo.id}"))
     expect(current_path).not_to(eq("/pets/#{@scooby.id}"))
   end
 
@@ -43,15 +43,28 @@ RSpec.describe("Application Show Page") do
       describe("In that section I see an input where I can search for Pets by name") do
         describe("When I fill in this field with a Pet's name And I click submit,") do
           describe("Then I am taken back to the application show page") do
-            it ("#4.And under the search bar I see any Pet whose name matches my search") do
+            it(("#4.And under the search bar I see any Pet whose name matches my search")) do
               visit("/applications/#{@smithers_application.id}")
               fill_in(:pet_name,               with: "Scooby")
               click_button("Search")
-              expect(current_path).to eq("/applications/#{@smithers_application.id}")
-              # save_and_open_page
+              expect(current_path).to(eq("/applications/#{@smithers_application.id}"))
             end
           end
         end
+      end
+    end
+  end
+
+  describe("I search for a Pet by name And I see the names Pets that match my search") do
+    describe(" Then next to each Pet's name I see a button to Adopt this Pet When I click one of these buttons") do
+      it("Then I am taken back to the application show page And I see the Pet I want to adopt listed on this application") do
+        visit("/applications/#{@smithers_application.id}")
+        visit("/applications/#{@smithers_application.id}")
+        fill_in(:pet_name,         with: "Scooby")
+        click_button("Search")
+        expect(current_path).to(eq("/applications/#{@smithers_application.id}"))
+        click_button("Adopt:#{@scooby.name}")
+        expect(current_path).to(eq("/applications/#{@smithers_application.id}/#{@scooby.id}"))
       end
     end
   end
