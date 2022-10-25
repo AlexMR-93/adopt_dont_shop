@@ -8,14 +8,11 @@ RSpec.describe("Application Show Page") do
     @shelter = Shelter.create(    name: "Mystery Building",     city: "Irvine CA",     foster_program: false,     rank: 9)
     @scooby = Pet.create(    name: "Scooby",     age: 2,     breed: "Great Dane",     adoptable: true,     shelter_id: @shelter.id)
     @pablo = Pet.create(    name: "Pablo",     age: 1,     breed: "Chihuahua",     adoptable: true,     shelter_id: @shelter.id)
-
-    @pet_app_1 = PetApplication.create!(    pet: @pablo,     application: @smithers_application)
-    @aurora = Shelter.create!(name: 'Aurora shelter', city: 'Aurora, CO', foster_program: false, rank: 9)
-    @bare_y = Pet.create!(adoptable: true, age: 7, breed: 'sphynx', name: 'Bare-y Manilow', shelter_id: @aurora.id)
-    @babe = Pet.create!(adoptable: true, age: 3, breed: 'domestic pig', name: 'Babe', shelter_id: @aurora.id)
-    @elle = Pet.create!(adoptable: true, age: 4, breed: 'chihuahua', name: 'Elle', shelter_id: @aurora.id)
-    @barbados = Pet.create!(adoptable: true, age: 8, breed: 'poodle', name: 'Barbados', shelter_id: @shelter.id)
-
+    @aurora = Shelter.create!(    name: "Aurora shelter",     city: "Aurora, CO",     foster_program: false,     rank: 9)
+    @bare_y = Pet.create!(    adoptable: true,     age: 7,     breed: "sphynx",     name: "Bare-y Manilow",     shelter_id: @aurora.id)
+    @babe = Pet.create!(    adoptable: true,     age: 3,     breed: "domestic pig",     name: "Babe",     shelter_id: @aurora.id)
+    @elle = Pet.create!(    adoptable: true,     age: 4,     breed: "chihuahua",     name: "Elle",     shelter_id: @aurora.id)
+    @barbados = Pet.create!(    adoptable: true,     age: 8,     breed: "poodle",     name: "Barbados",     shelter_id: @shelter.id)
   end
 
   it("shows an application's attributes") do
@@ -102,7 +99,6 @@ RSpec.describe("Application Show Page") do
     end
   end
 
-
   describe("7. No Pets on an Application") do
     describe("And I have not added any pets to the application") do
       it("I do not see a section to submit my application") do
@@ -111,51 +107,44 @@ RSpec.describe("Application Show Page") do
       end
     end
 
-  describe "8 & 9-Matches for Pet Names in Searches" do
-    it "8. display any pet whose name PARTIALLY matches the search" do
-      visit("/applications/#{@smithers_application.id}")
+    describe("8 & 9-Matches for Pet Names in Searches") do
+      it("8. display any pet whose name PARTIALLY matches the search") do
+        visit("/applications/#{@smithers_application.id}")
+        fill_in("pet_name",         with: "ba")
+        click_on("Search")
+        expect(page).to(have_content(@bare_y.name))
+        expect(page).to(have_content(@babe.name))
+        expect(page).to_not(have_content(@elle.name))
+        expect(page).to_not(have_content(@scooby.name))
+        expect(page).to_not(have_content(@aurora.name))
+        expect(page).to_not(have_content(@homer_application.name))
+        fill_in("pet_name",         with: "o")
+        click_on("Search")
+        expect(page).to(have_content(@scooby.name))
+        expect(page).to(have_content(@barbados.name))
+        expect(page).to_not(have_content(@babe.name))
+        expect(page).to_not(have_content(@elle.name))
+        expect(page).to_not(have_content(@aurora.name))
+        expect(page).to_not(have_content(@homer_application.name))
+      end
 
-      fill_in "pet_name", with: "ba"
-      click_on("Search")
-      expect(page).to have_content(@bare_y.name)
-      expect(page).to have_content(@babe.name)
-      expect(page).to_not have_content(@elle.name)
-      expect(page).to_not have_content(@scooby.name)
-      expect(page).to_not have_content(@aurora.name)
-      expect(page).to_not have_content(@homer_application.name)
-
-      fill_in "pet_name", with: "o"
-      click_on("Search")
-      expect(page).to have_content(@scooby.name)
-      expect(page).to have_content(@barbados.name)
-      expect(page).to_not have_content(@babe.name)
-      expect(page).to_not have_content(@elle.name)
-      expect(page).to_not have_content(@aurora.name)
-      expect(page).to_not have_content(@homer_application.name)
+      it("9. Case Insensitive Matches for Pet Names") do
+        visit("/applications/#{@smithers_application.id}")
+        fill_in("pet_name",         with: "BA")
+        click_on("Search")
+        expect(page).to(have_content(@bare_y.name))
+        expect(page).to(have_content(@babe.name))
+        expect(page).to_not(have_content(@elle.name))
+        expect(page).to_not(have_content(@aurora.name))
+        fill_in("pet_name",         with: "bA")
+        click_on("Search")
+        expect(page).to(have_content(@bare_y.name))
+        expect(page).to(have_content(@babe.name))
+        expect(page).to(have_content(@barbados.name))
+        expect(page).to_not(have_content(@elle.name))
+        expect(page).to_not(have_content(@aurora.name))
+        expect(page).to_not(have_content(@homer_application.name))
+      end
     end
-
-    it "9. Case Insensitive Matches for Pet Names" do
-      visit("/applications/#{@smithers_application.id}")
-
-      fill_in "pet_name", with: "BA"
-      click_on("Search")
-      expect(page).to have_content(@bare_y.name)
-      expect(page).to have_content(@babe.name)
-      expect(page).to_not have_content(@elle.name)
-      expect(page).to_not have_content(@aurora.name)
-
-      fill_in "pet_name", with: "bA"
-      click_on("Search")
-      expect(page).to have_content(@bare_y.name)
-      expect(page).to have_content(@babe.name)
-      expect(page).to have_content(@barbados.name)
-    
-      expect(page).to_not have_content(@elle.name)
-      expect(page).to_not have_content(@aurora.name)
-      expect(page).to_not have_content(@homer_application.name)
-
-    end
-
-
   end
 end
