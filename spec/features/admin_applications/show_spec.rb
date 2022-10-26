@@ -40,7 +40,7 @@ RSpec.describe("Admin Application Show Page") do
           within("#pets-#{@bolt.id}")
           click_button("Reject #{@bolt.name} for #{@smithers_application.name}")
           expect(current_path).to(eq("/admin/applications/#{@smithers_application.id}"))
-          expect(page).to(have_content("Application Status: Approved"))
+          expect(page).to(have_content("Application Status: Rejected"))
         end
       end
     end
