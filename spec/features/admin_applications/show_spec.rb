@@ -12,6 +12,8 @@ RSpec.describe("Admin Application Show Page") do
     @bolt = @shelter1.pets.create(    name: "Bolt",     age: 1,     breed: "Chihuahua",     adoptable: true,     shelter_id: @shelter2.id)
     @pet_app_1 = PetApplication.create!(    pet: @bolt,     application: @smithers_application)
     @pet_app_2 = PetApplication.create!(    pet: @scooby,     application: @smithers_application)
+    @pet_app_3 = PetApplication.create!(    pet: @scooby,     application: @homer_application)
+  
   end
 
   describe("For every pet that the application is for, I see a button to approve the application for that specific pet") do
@@ -19,7 +21,7 @@ RSpec.describe("Admin Application Show Page") do
       describe(" next to the pet that I approved, I do not see a button to approve this pet") do
         it("#12.instead I see an indicator next to the pet that they have been approved") do
           visit("/admin/applications/#{@smithers_application.id}")
-          save_and_open_page
+          # save_and_open_page
           expect(page).to(have_button("Approve #{@bolt.name} for #{@smithers_application.name}"))
           within("#pets-#{@bolt.id}")
           click_button("Approve #{@bolt.name} for #{@smithers_application.name}")
@@ -35,7 +37,7 @@ RSpec.describe("Admin Application Show Page") do
       describe(" next to the pet that I Rejected, I do not see a button to approve this pet") do
         it("#13.instead I see an indicator next to the pet that they have been Rejected") do
           visit("/admin/applications/#{@smithers_application.id}")
-          save_and_open_page
+          # save_and_open_page
           expect(page).to(have_button("Approve #{@bolt.name} for #{@smithers_application.name}"))
           within("#pets-#{@bolt.id}")
           click_button("Reject #{@bolt.name} for #{@smithers_application.name}")
@@ -45,4 +47,32 @@ RSpec.describe("Admin Application Show Page") do
       end
     end
   end
+
+  describe "When there are two applications in the system for the same pet" do
+    describe "When I visit the admin application show page for one of the applications" do
+      describe "And I approve or reject the pet for that application" do
+        it "does not display that the pet has been accepted or rejected for that application" do
+          visit("/admin/applications/#{@smithers_application.id}")
+          within("#pets-#{@scooby.id}")
+          click_button("Reject #{@scooby.name} for #{@smithers_application.name}")
+          
+          visit("/admin/applications/#{@homer_application.id}")
+          # save_and_open_page
+          expect(page).to(have_button("Approve #{@scooby.name} for #{@homer_application.name}"))
+          within("#pets-#{@scooby.id}")
+          click_button("Reject #{@scooby.name} for #{@homer_application.name}")
+        end
+        
+        it "displays a buttons to approve or reject the pet for the other application" do
+          visit("/admin/applications/#{@homer_application.id}")
+          expect(page).to(have_button("Approve #{@scooby.name} for #{@homer_application.name}"))
+          within("#pets-#{@scooby.id}")
+          click_button("Reject #{@scooby.name} for #{@homer_application.name}")
+        end
+      end
+    end
+
+  end
+
+
 end

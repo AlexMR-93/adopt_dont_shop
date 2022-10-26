@@ -53,6 +53,7 @@ RSpec.describe("Application Show Page") do
               click_button("Search")
               click_button("Adopt:#{@scooby.name}")
               expect(current_path).to(eq("/applications/#{@smithers_application.id}"))
+              expect(current_path).not_to(eq("/applications/#{@homer_application.id}"))
             end
           end
         end
@@ -69,6 +70,7 @@ RSpec.describe("Application Show Page") do
         expect(current_path).to(eq("/applications/#{@smithers_application.id}"))
         click_button("Adopt:#{@scooby.name}")
         expect(current_path).to(eq("/applications/#{@smithers_application.id}"))
+        expect(current_path).not_to(eq("/applications/#{@homer_application.id}"))
       end
     end
   end
@@ -89,7 +91,9 @@ RSpec.describe("Application Show Page") do
                   fill_in(:description,                   with: "I have a lot of land and no friends")
                   click_button("Submit my Application")
                   expect(current_path).to(eq("/applications/#{@smithers_application.id}"))
+                  expect(current_path).not_to(eq("/applications/#{@homer_application.id}"))
                   expect(page).to(have_content("Pending"))
+                  expect(page).not_to(have_content("Approved"))
                 end
               end
             end
