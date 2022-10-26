@@ -5,3 +5,7 @@
 <%@shelters.each do |s|%>
 <ol><%= s.name %></ol>
 <% end %>
+
+<% Shelter.pending_apps.each do |s| %>
+<p>Shelters with Pending Applications:<%= s.name %></p>
+<%end %>

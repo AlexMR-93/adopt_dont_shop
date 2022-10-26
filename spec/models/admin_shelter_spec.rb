@@ -11,7 +11,7 @@ RSpec.describe(AdminShelter) do
   describe("class methods") do
     describe("#alpha_organize") do
       it("returns alphabetical order") do
-        expect(Shelter.alpha_organize).to eq([@shelter3, @shelter2, @shelter1])
+        expect(Shelter.alpha_organize).to(eq([@shelter3, @shelter2, @shelter1]))
       end
     end
   end
