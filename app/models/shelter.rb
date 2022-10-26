@@ -29,7 +29,10 @@ class Shelter < ApplicationRecord
   end
 
   def self.alpha_organize
-    find_by_sql('SELECT * FROM shelters ORDER BY shelters.name DESC')
+    find_by_sql("SELECT * FROM shelters ORDER BY shelters.name DESC")
+  end
 
+  def self.pending_apps
+    joins(    pets: :applications).where("applications.status = ?", "Pending").distinct.order(:name)
   end
 end
