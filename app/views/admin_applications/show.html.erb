@@ -6,16 +6,15 @@
      <%=pet.name%></ul>
 
 
-     <% if !pet.pet_applications.where(application_id: @application.id, pet_id: pet.id).first.status %>
-      <%= button_to "Approve #{pet.name} for #{@application.name}", "/admin/applications/#{@application.id}?pet_id=#{pet.id}&approved=true" %>
-      <%= button_to "Reject #{pet.name} for #{@application.name}", "/admin/applications/#{@application.id}?pet_id=#{pet.id}&rejected=true" %>
+     <% if !pet.pet_applications.where(application_id: @application.id, pet_id: pet.id).first.status %>     
+      <%= render partial: "forms", locals: {description: "Approve #{pet.name} for #{@application.name}", url: "/admin/applications/#{@application.id}?pet_id=#{pet.id}&approved=true"} %>
+      <%= render partial: "forms", locals: {description: "Reject #{pet.name} for #{@application.name}", url: "/admin/applications/#{@application.id}?pet_id=#{pet.id}&rejected=true"} %>
 
     <% elsif pet.pet_applications.where(application_id: @application.id, pet_id: pet.id).first.status == "Approved"%>
+    <h4> Application Status: Approved </h4>
 
-      <h4>Application Status: Approved</h4>
     <% elsif pet.pet_applications.where(application_id: @application.id, pet_id: pet.id).first.status == "Rejected" %>
-      <h4>Application Status: Rejected</h4>
-      
+      <h4> Application Status: Rejected </h4>
     <% end %>
       </div>
   <% end %>

@@ -18,7 +18,7 @@
 
    <% @pets.each do |pet| %>
      <p><%= pet.name %> </p>
-     <%= button_to "Adopt:#{pet.name}", "/applications/#{@application.id}/#{pet.id}" %>
+     <%= render partial: "forms", locals: {description: "Adopt:#{pet.name}", url: "/applications/#{@application.id}/#{pet.id}"} %>
     <% end %>
 
 
