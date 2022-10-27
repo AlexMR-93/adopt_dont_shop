@@ -111,7 +111,7 @@ RSpec.describe("Admin Application Show Page") do
             click_button("Approve #{@bolt.name} for #{@smithers_application.name}")
             click_button("Approve #{@babe.name} for #{@smithers_application.name}")
             click_button("Reject #{@scooby.name} for #{@smithers_application.name}")
-            save_and_open_page
+            # save_and_open_page
             expect(current_path).to(eq("/admin/applications/#{@smithers_application.id}"))
             expect(page).to(have_content("Application Status: Rejected"))
           end

@@ -11,11 +11,16 @@ joe_application = Application.create!(name: "Joe", street_address: "2 Middle Rid
 smith_application = Application.create!(name: "Smith", street_address: "4 East Ridge", city: "Darby", state: "IL", zip_code: 90597, description: "love to drink alone... need friends", status: "In Progress")
 
 shelter = Shelter.create!(name: "Mystery Building", city: "Irvine CA", foster_program: false, rank: 9)
+aurora = Shelter.create!(name: 'Aurora shelter', city: 'Aurora, CO', foster_program: false, rank: 9)
+als = Shelter.create!(    name: "Als Adoption",     city: "Apple valley CA",     foster_program: false,     rank: 9)
+calcity = Shelter.create!(    name: "Calcity Center",     city: "Catalina CA",     foster_program: false,     rank: 9)
+barstow = Shelter.create!(    name: "Barstow Building",     city: "Barstow CA",     foster_program: false,     rank: 9)
+
+
 scooby = Pet.create!(name: "Scooby", age: 2, breed: "Great Dane", adoptable: true, shelter_id: shelter.id)
 bolt = Pet.create!(name: "Bolt", age: 1, breed: "Chihuahua", adoptable: true, shelter_id: shelter.id)
 barbados = Pet.create!(adoptable: true, age: 8, breed: 'poodle', name: 'Barbados', shelter_id: shelter.id)
 
-aurora = Shelter.create!(name: 'Aurora shelter', city: 'Aurora, CO', foster_program: false, rank: 9)
 bare_y = Pet.create!(adoptable: true, age: 7, breed: 'sphynx', name: 'Bare-y Manilow', shelter_id: aurora.id)
 babe = Pet.create!(adoptable: true, age: 3, breed: 'domestic pig', name: 'Babe', shelter_id: aurora.id)
 elle = Pet.create!(adoptable: true, age: 4, breed: 'chihuahua', name: 'Elle', shelter_id: aurora.id)
